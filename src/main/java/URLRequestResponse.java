@@ -30,6 +30,7 @@ public class URLRequestResponse {
         switch (shopNumber){
             case (2):
                 dataAPI = "https://suppliers-api.wildberries.ru";
+//                dataAPI = "https://statistics-api.wildberries.ru";
                 switch (methodNumber){
                     case (1):
                         dataMethod = "/public/api/v1/info?quantity=0";
@@ -44,15 +45,18 @@ public class URLRequestResponse {
                         dataMethod = "/public/api/v1/updatePromocodes";
                         break;
                     case (5):
-                        dataAPI = "https://suppliers-stats.wildberries.ru";
+//                        dataAPI = "https://suppliers-stats.wildberries.ru";
+                        dataAPI = "https://statistics-api.wildberries.ru";
                         dataMethod = "/api/v1/supplier/stocks?dateFrom=" + getDataCurrent() + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     case (6):
-                        dataAPI = "https://suppliers-stats.wildberries.ru";
+//                        dataAPI = "https://suppliers-stats.wildberries.ru";
+                        dataAPI = "https://statistics-api.wildberries.ru";
                         dataMethod = "/api/v1/supplier/sales?dateFrom=" + getDataCurrent() + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     case (7):
-                        dataAPI = "https://suppliers-stats.wildberries.ru";
+//                        dataAPI = "https://suppliers-stats.wildberries.ru";
+                        dataAPI = "https://statistics-api.wildberries.ru";
                         dataMethod = "/api/v1/supplier/orders?dateFrom=" + getDataCurrent() + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     default:

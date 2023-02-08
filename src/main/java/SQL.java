@@ -113,6 +113,7 @@ public class SQL {
 
                     }
                 }
+                if (mode.equals("salesozon")) System.out.println("HERE");
             }
         } catch (Exception ex) {
             System.out.println(ex);
