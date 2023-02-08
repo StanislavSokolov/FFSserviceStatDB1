@@ -113,7 +113,22 @@ public class SQL {
 
                     }
                 }
-                if (mode.equals("salesozon")) System.out.println("HERE");
+                if (mode.equals("salesozon")) {
+                    ResultSet resultSet = statement.executeQuery("SELECT * FROM statofeveryorderfromozon");
+                    while (resultSet.next()) {
+                        odid = resultSet.getString("odid");
+                        for (Product p: products) {
+                            if (odid.equals(p.getOdid())) {
+                                p.setCoincidence(true);
+                            }
+                        }
+                    }
+                    for (Product p: products) {
+                        if (!p.isCoincidence()) statement.executeUpdate("INSERT statofeveryorderfromozon(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
+//                        statement.executeUpdate("INSERT statofeverysalefromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
+
+                    }
+                }
             }
         } catch (Exception ex) {
             System.out.println(ex);

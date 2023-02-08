@@ -14,8 +14,8 @@ public class Update extends Thread {
     private final String TOKENWBSTANDART = "TOKENWBSTANDART";
     private final String TOKENWBSTATISTIC = "TOKENWBSTATISTIC";
     private final String TOKENWBADVERTISING = "TOKENWBADVERTISING";
-    private final String TOKENOZON1 = "TOKENOZON1";
     private final String TOKENOZON2 = "TOKENOZON2";
+    private final String TOKENOZON1 = "TOKENOZON1";
 
     @Override
     public void run() {
