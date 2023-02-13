@@ -114,6 +114,7 @@ public class SQL {
                     }
                 }
                 if (mode.equals("salesozon")) {
+
                     ResultSet resultSet = statement.executeQuery("SELECT * FROM statofeveryorderfromozon");
                     while (resultSet.next()) {
                         odid = resultSet.getString("odid");
@@ -125,7 +126,7 @@ public class SQL {
                     }
                     for (Product p: products) {
                         if (!p.isCoincidence()) statement.executeUpdate("INSERT statofeveryorderfromozon(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
-//                        statement.executeUpdate("INSERT statofeverysalefromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
+//                        statement.executeUpdate("INSERT statofeveryorderfromozon(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
 
                     }
                 }

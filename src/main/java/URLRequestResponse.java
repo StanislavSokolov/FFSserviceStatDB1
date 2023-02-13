@@ -15,10 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class URLRequestResponse {
 
@@ -52,12 +49,12 @@ public class URLRequestResponse {
                     case (6):
 //                        dataAPI = "https://suppliers-stats.wildberries.ru";
                         dataAPI = "https://statistics-api.wildberries.ru";
-                        dataMethod = "/api/v1/supplier/sales?dateFrom=" + getDataCurrent() + "T00%3A00%3A00.000Z&key=" + token;
+                        dataMethod = "/api/v1/supplier/sales?dateFrom=" + getData(0) + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     case (7):
 //                        dataAPI = "https://suppliers-stats.wildberries.ru";
                         dataAPI = "https://statistics-api.wildberries.ru";
-                        dataMethod = "/api/v1/supplier/orders?dateFrom=" + getDataCurrent() + "T00%3A00%3A00.000Z&key=" + token;
+                        dataMethod = "/api/v1/supplier/orders?dateFrom=" + getData(0) + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     default:
                         break;
@@ -142,6 +139,32 @@ public class URLRequestResponse {
         return year + "-" + month1 + "-" + day;
     }
 
+    public static String getData(int i) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, i);
+        String str = calendar.getTime().toString();
+        String[] subStr;
+        String delimeter = " "; // Разделитель
+        subStr = str.split(delimeter); // Разделения строки str с помощью метода split()
+        String day = subStr[2];
+        String month = subStr[1];
+        String year = subStr[5];
+        String month1 = month;
+        if (month.equals("Jan")) month1 = "01";
+        else if (month.equals("Feb")) month1 = "02";
+        else if (month.equals("Mar")) month1 = "03";
+        else if (month.equals("Apr")) month1 = "04";
+        else if (month.equals("May")) month1 = "05";
+        else if (month.equals("Jun")) month1 = "06";
+        else if (month.equals("Jul")) month1 = "07";
+        else if (month.equals("Aug")) month1 = "08";
+        else if (month.equals("Sep")) month1 = "09";
+        else if (month.equals("Oct")) month1 = "10";
+        else if (month.equals("Nov")) month1 = "11";
+        else month1 = "12";
+        return year + "-" + month1 + "-" + day;
+    }
+
     public static String getResponseFromURL(URL url, String token) throws IOException, URISyntaxException {
 
         final CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -169,7 +192,7 @@ public class URLRequestResponse {
         {
             final HttpEntity entity1 = response1.getEntity();
             String respond = EntityUtils.toString(entity1);
-            System.out.println(respond);
+//            System.out.println(respond);
             return respond;
         }
     }
