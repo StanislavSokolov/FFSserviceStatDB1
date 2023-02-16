@@ -135,4 +135,33 @@ public class SQL {
             System.out.println(ex);
         }
     }
+
+    public static void upDate1(ArrayList<Item> items, String mode) {
+        System.out.println("HERE");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            try (Connection conn = getConnection()) {
+                int nmId = 0;
+                Statement statement = conn.createStatement();
+                if (mode.equals("wb")) {
+                    ResultSet resultSet = statement.executeQuery("SELECT * FROM itemcostpricewb");
+                    while (resultSet.next()) {
+                        nmId = resultSet.getInt("nmId");
+                        for (Item i: items) {
+                            if (nmId == i.getNmId()) {
+                                i.setCoincidence(true);
+                            }
+                        }
+                    }
+                    for (Item i: items) {
+//                        System.out.println(i.getSupplierArticle());
+                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, costprice, nmId) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', 0, " + i.getNmId());
+//                        statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, costprice, nmId) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', 0, " + i.getNmId() + ")");
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
 }

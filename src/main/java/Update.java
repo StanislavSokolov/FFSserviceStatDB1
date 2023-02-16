@@ -20,18 +20,22 @@ public class Update extends Thread {
 
     @Override
     public void run() {
+
+        int count = 0;
+
         super.run();
         while (true) {
             try {
-                update();
-                sleep(1800000);
+                update(count);
+                sleep(900000);
+                if (count > 96) count = 0; else count++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void update() {
+    private void update(int count) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -129,6 +133,46 @@ public class Update extends Thread {
         }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if (count == 0) {
+            generetedURL = URLRequestResponse.generateURL(2, 5, TOKENWBSTATISTIC);
+            try {
+                response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTATISTIC);
+                System.out.println(response);
+                if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
+                    ArrayList<Item> items = new ArrayList<>();
+                    JSONObject jsonObject = new JSONObject("{\"price\":" + response + "}");
+                    for (int i = 0; i < jsonObject.getJSONArray("price").length(); i++) {
+                        boolean coincidence = false;
+                        if (items.isEmpty()) {
+                            items.add(new Item(jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
+                                    0,
+                                    0,
+                                    parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString()));
+                        } else {
+                            for (Item itemCurrent : items) {
+                                if (itemCurrent.getNmId() == parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString())) {
+                                    coincidence = true;
+                                }
+                            }
+                            if (!coincidence) {
+                                items.add(new Item(jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
+                                        0,
+                                        0,
+                                        parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString()));
+                            }
+                            coincidence = false;
+                        }
+                    }
+                    if (!items.isEmpty()) SQL.upDate1(items, "wb");
+                }
+
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -9,6 +9,16 @@ public class Item {
     private int promoCode = 0;
     private int total = 0;
 
+    private boolean coincidence = false;
+
+    public boolean isCoincidence() {
+        return coincidence;
+    }
+
+    public void setCoincidence(boolean coincidence) {
+        this.coincidence = coincidence;
+    }
+
     public int getTotal() {
         return total;
     }
