@@ -155,8 +155,8 @@ public class SQL {
                     }
                     for (Item i: items) {
                         System.out.println(i.getSupplierArticle());
-                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, nmId, quantity, quantityFull) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', " + i.getNmId() + ", " + i.getQuantity() + ", " + i.getQuantityFull() + ")");
-                        else statement.executeUpdate("UPDATE itemcostpricewb SET quantity = " + i.getQuantity() + ", quantityFull = " + i.getQuantityFull() + " WHERE nmId = " + i.getNmId());
+                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, nmId, quantity, quantityFull, price, discount, promoCode) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', " + i.getNmId() + ", " + i.getQuantity() + ", " + i.getQuantityFull() + ", " + i.getPrice() + ", " + i.getDiscount() + ", " + i.getPromoCode() + ")");
+                        else statement.executeUpdate("UPDATE itemcostpricewb SET quantity = " + i.getQuantity() + ", quantityFull = " + i.getQuantityFull() + ", price = " + i.getPrice() + ", discount = " + i.getDiscount() + ", promoCode = " + i.getPromoCode() + " WHERE nmId = " + i.getNmId());
                     }
                 }
             }

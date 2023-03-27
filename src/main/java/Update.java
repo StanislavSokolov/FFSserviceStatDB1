@@ -166,7 +166,29 @@ public class Update extends Thread {
                             coincidence = false;
                         }
                     }
-                    if (!items.isEmpty()) SQL.upDate1(items, "wb");
+
+                    if (!items.isEmpty())  {
+                        generetedURL = URLRequestResponse.generateURL(2, 1, TOKENWBSTANDART);
+                        try {
+                            response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTANDART);
+                            if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
+                                System.out.println(response);
+                                JSONObject jsonObject1 = new JSONObject("{\"price\":" + response + "}");
+                                for (int i = 0; i < jsonObject1.getJSONArray("price").length(); i++) {
+                                    for (Item itemCurrent : items) {
+                                        if (itemCurrent.getNmId() == parseInt(jsonObject1.getJSONArray("price").getJSONObject(i).get("nmId").toString())) {
+                                            itemCurrent.setPrice(parseInt(jsonObject1.getJSONArray("price").getJSONObject(i).get("price").toString()));
+                                            itemCurrent.setDiscount(parseInt(jsonObject1.getJSONArray("price").getJSONObject(i).get("discount").toString()));
+                                            itemCurrent.setPromoCode(parseInt(jsonObject1.getJSONArray("price").getJSONObject(i).get("promoCode").toString()));
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (IOException | URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                        SQL.upDate1(items, "wb");
+                    }
                 }
 
             } catch (IOException | URISyntaxException e) {
