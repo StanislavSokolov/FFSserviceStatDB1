@@ -153,6 +153,8 @@ public class Update extends Thread {
                         } else {
                             for (Item itemCurrent : items) {
                                 if (itemCurrent.getNmId() == parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString())) {
+                                    itemCurrent.setQuantity(itemCurrent.getQuantity() + parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()));
+                                    itemCurrent.setQuantityFull(itemCurrent.getQuantityFull() + parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantityFull").toString()));
                                     coincidence = true;
                                 }
                             }
