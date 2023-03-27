@@ -154,9 +154,9 @@ public class SQL {
                         }
                     }
                     for (Item i: items) {
-//                        System.out.println(i.getSupplierArticle());
-                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, costprice, nmId) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', 0, " + i.getNmId());
-//                        statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, costprice, nmId) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', 0, " + i.getNmId() + ")");
+                        System.out.println(i.getSupplierArticle());
+                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, nmId, quantity, quantityFull) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', " + i.getNmId() + ", " + i.getQuantity() + ", " + i.getQuantityFull() + ")");
+                        else statement.executeUpdate("UPDATE itemcostpricewb SET quantity = " + i.getQuantity() + ", quantityFull = " + i.getQuantityFull() + " WHERE nmId = " + i.getNmId());
                     }
                 }
             }

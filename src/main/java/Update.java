@@ -28,7 +28,7 @@ public class Update extends Thread {
             try {
                 update(count);
                 sleep(900000);
-                if (count > 96) count = 0; else count++;
+                if (count > 48) count = 0; else count++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -146,8 +146,8 @@ public class Update extends Thread {
                         boolean coincidence = false;
                         if (items.isEmpty()) {
                             items.add(new Item(jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
-                                    0,
-                                    0,
+                                    parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()),
+                                    parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantityFull").toString()),
                                     parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
                                     jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString()));
                         } else {
@@ -158,8 +158,8 @@ public class Update extends Thread {
                             }
                             if (!coincidence) {
                                 items.add(new Item(jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
-                                        0,
-                                        0,
+                                        parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()),
+                                        parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantityFull").toString()),
                                         parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
                                         jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString()));
                             }
@@ -230,8 +230,6 @@ public class Update extends Thread {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
-
     }
 }
 
