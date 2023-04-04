@@ -6,6 +6,12 @@ public class Product {
     private int nmId = 0;
     private int finishedPrice = 0;
     private int forPay = 0;
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    private String warehouseName = "";
     private String oblastOkrugName = "";
     private boolean coincidence = false;
 
@@ -23,7 +29,7 @@ public class Product {
         this.coincidence = coincidence;
     }
 
-    public Product(String cdate, String csubject, String supplierArticle, int nmId, int finishedPrice, int forPay, String oblastOkrugName, String odid) {
+    public Product(String cdate, String csubject, String supplierArticle, int nmId, int finishedPrice, int forPay, String warehouseName, String oblastOkrugName, String odid) {
         this.cdate = cdate.substring(0, 10);
         this.ctime = cdate.substring(11, 19);
         this.csubject = csubject;
@@ -31,6 +37,7 @@ public class Product {
         this.nmId = nmId;
         this.finishedPrice = finishedPrice;
         this.forPay = forPay;
+        this.warehouseName = warehouseName;
         this.oblastOkrugName = oblastOkrugName;
         this.odid = odid;
         this.coincidence = false;
@@ -68,12 +75,14 @@ public class Product {
         return oblastOkrugName;
     }
 
-    public Product(String cdate, String csubject, String supplierArticle, int nmId, String odid) {
+    public Product(String cdate, String csubject, String supplierArticle, int nmId, String warehouseName, String oblastOkrugName, String odid) {
         this.cdate = cdate.substring(0, 10);
         this.ctime = cdate.substring(11, 19);
         this.csubject = csubject;
         this.supplierArticle = supplierArticle;
         this.nmId = nmId;
+        this.warehouseName = warehouseName;
+        this.oblastOkrugName = oblastOkrugName;
         this.odid = odid;
         this.coincidence = false;
     }

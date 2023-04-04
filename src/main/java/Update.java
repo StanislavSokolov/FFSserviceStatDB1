@@ -48,7 +48,7 @@ public class Update extends Thread {
         generetedURL = URLRequestResponse.generateURL(2, 6, TOKENWBSTATISTIC);
         try {
             response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTATISTIC);
-//            System.out.println(response);
+            System.out.println(response);
 
             if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
                 ArrayList<Product> products = new ArrayList<>();
@@ -63,6 +63,7 @@ public class Update extends Thread {
                                 Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
                                 (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("finishedPrice").toString())),
                                 (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("forPay").toString())),
+                                jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
                                 jsonObject.getJSONArray("price").getJSONObject(i).get("oblastOkrugName").toString(),
                                 jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
                     } else {
@@ -78,6 +79,7 @@ public class Update extends Thread {
                                     Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
                                     (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("finishedPrice").toString())),
                                     (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("forPay").toString())),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
                                     jsonObject.getJSONArray("price").getJSONObject(i).get("oblastOkrugName").toString(),
                                     jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
                         }
@@ -97,7 +99,7 @@ public class Update extends Thread {
         generetedURL = URLRequestResponse.generateURL(2, 7, TOKENWBSTATISTIC);
         try {
             response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTATISTIC);
-//            System.out.println(response);
+            System.out.println(response);
 
             if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
                 ArrayList<Product> products = new ArrayList<>();
@@ -110,6 +112,8 @@ public class Update extends Thread {
                                 jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
                                 jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
                                 Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
+                                jsonObject.getJSONArray("price").getJSONObject(i).get("oblast").toString(),
                                 jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
                     } else {
                         for (Product product : products) {
@@ -122,6 +126,8 @@ public class Update extends Thread {
                                     jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
                                     jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
                                     Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("oblast").toString(),
                                     jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
                         }
                     }
@@ -149,12 +155,14 @@ public class Update extends Thread {
                                     parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()),
                                     parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantityFull").toString()),
                                     parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString()));
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString()));
                         } else {
                             for (Item itemCurrent : items) {
                                 if (itemCurrent.getNmId() == parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString())) {
                                     itemCurrent.setQuantity(itemCurrent.getQuantity() + parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()));
                                     itemCurrent.setQuantityFull(itemCurrent.getQuantityFull() + parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantityFull").toString()));
+                                    itemCurrent.addQuantityWarehouse(parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()), jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString());
                                     coincidence = true;
                                 }
                             }
@@ -163,7 +171,8 @@ public class Update extends Thread {
                                         parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantity").toString()),
                                         parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("quantityFull").toString()),
                                         parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
-                                        jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString()));
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString()));
                             }
                             coincidence = false;
                         }
@@ -206,7 +215,7 @@ public class Update extends Thread {
 
             ArrayList<Product> products = new ArrayList<>();
 
-//            System.out.println(response);
+            System.out.println(response);
 
             String answerString = "";
 
@@ -220,6 +229,7 @@ public class Update extends Thread {
                         Integer.parseInt(jsonArray.getJSONObject(0).get("sku").toString()),
                         (int) (Float.parseFloat(jsonArray.getJSONObject(0).get("price").toString())),
                         (int) (Float.parseFloat(jsonArray.getJSONObject(0).get("price").toString()) * 0.88),
+                        "",
                         jsonObject6.getString("region") + " (" + jsonObject6.getString("city") + ")",
                         jsonObject5.getJSONArray("result").getJSONObject(i).get("order_id").toString());
                 answerString = answerString

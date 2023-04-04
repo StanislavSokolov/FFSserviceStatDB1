@@ -92,7 +92,7 @@ public class SQL {
                         }
                     }
                     for (Product p: products) {
-                        if (!p.isCoincidence()) statement.executeUpdate("INSERT statofeverysalefromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
+                        if (!p.isCoincidence()) statement.executeUpdate("INSERT statofeverysalefromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, warehouseName, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getWarehouseName() + "', '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
 //                        statement.executeUpdate("INSERT statofeverysalefromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
 
                     }
@@ -108,7 +108,7 @@ public class SQL {
                         }
                     }
                     for (Product p: products) {
-                        if (!p.isCoincidence()) statement.executeUpdate("INSERT statofeveryorderfromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
+                        if (!p.isCoincidence()) statement.executeUpdate("INSERT statofeveryorderfromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay,  warehouseName, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getWarehouseName() + "', '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
 //                        statement.executeUpdate("INSERT statofeveryorderfromwb(cdate, ctime, csubject, supplierArticle, nmId, finishedPrice, forPay, oblastOkrugName, odid) VALUES ('" + p.getCdate() + "', '" + p.getCtime() + "', '" + p.getCsubject() + "', '"  + p.getSupplierArticle() + "', " + p.getNmId() + ", " + p.getFinishedPrice() + ", " + p.getForPay() + ", '" + p.getOblastOkrugName() + "', '" + p.getOdid() + "')");
 
                     }
@@ -137,7 +137,6 @@ public class SQL {
     }
 
     public static void upDate1(ArrayList<Item> items, String mode) {
-        System.out.println("HERE");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             try (Connection conn = getConnection()) {
@@ -155,8 +154,8 @@ public class SQL {
                     }
                     for (Item i: items) {
                         System.out.println(i.getSupplierArticle());
-                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, nmId, quantity, quantityFull, price, discount, promoCode) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', " + i.getNmId() + ", " + i.getQuantity() + ", " + i.getQuantityFull() + ", " + i.getPrice() + ", " + i.getDiscount() + ", " + i.getPromoCode() + ")");
-                        else statement.executeUpdate("UPDATE itemcostpricewb SET quantity = " + i.getQuantity() + ", quantityFull = " + i.getQuantityFull() + ", price = " + i.getPrice() + ", discount = " + i.getDiscount() + ", promoCode = " + i.getPromoCode() + " WHERE nmId = " + i.getNmId());
+                        if (!i.isCoincidence()) statement.executeUpdate("INSERT itemcostpricewb(subject, supplierArticle, nmId, quantity, quantityFull, SaintPetersburg, SaintPetersburg2, Koledino, Electrostal, Kazan, Other, price, discount, promoCode) VALUES ('" + i.getSubject() + "', '" + i.getSupplierArticle() + "', " + i.getNmId() + ", " + i.getQuantity() + ", " + i.getQuantityFull() + ", " + i.getWarehouseSaintPetersburg() + ", " + i.getWarehouseSaintPetersburg2() + ", " + i.getWarehouseKoledino() + ", " + i.getWarehouseElectrostal() + ", " + i.getWarehouseKazan() + ", " + i.getWarehouseOther() + ", " + i.getPrice() + ", " + i.getDiscount() + ", " + i.getPromoCode() + ")");
+                        else statement.executeUpdate("UPDATE itemcostpricewb SET quantity = " + i.getQuantity() + ", quantityFull = " + i.getQuantityFull() + ", SaintPetersburg = " + i.getWarehouseSaintPetersburg() + ", SaintPetersburg2 = " + i.getWarehouseSaintPetersburg2() + ", Koledino = " + i.getWarehouseKoledino() + ", Electrostal = " + i.getWarehouseElectrostal() + ", Kazan = " + i.getWarehouseKazan() + ", Other = " + i.getWarehouseOther() + ", price = " + i.getPrice() + ", discount = " + i.getDiscount() + ", promoCode = " + i.getPromoCode() + " WHERE nmId = " + i.getNmId());
                     }
                 }
             }

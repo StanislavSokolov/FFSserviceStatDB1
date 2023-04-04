@@ -4,6 +4,37 @@ public class Item {
     private int quantityFull = 0;
     private int nmId = 0;
     private String subject = "";
+    private int warehouseSaintPetersburg = 0;
+
+    public int getWarehouseSaintPetersburg() {
+        return warehouseSaintPetersburg;
+    }
+
+    public int getWarehouseSaintPetersburg2() {
+        return warehouseSaintPetersburg2;
+    }
+
+    public int getWarehouseKoledino() {
+        return warehouseKoledino;
+    }
+
+    public int getWarehouseElectrostal() {
+        return warehouseElectrostal;
+    }
+
+    public int getWarehouseKazan() {
+        return warehouseKazan;
+    }
+
+    public int getWarehouseOther() {
+        return warehouseOther;
+    }
+
+    private int warehouseSaintPetersburg2 = 0;
+    private int warehouseKoledino = 0;
+    private int warehouseElectrostal = 0;
+    private int warehouseKazan = 0;
+    private int warehouseOther = 0;
     private int price = 0;
     private int discount = 0;
     private int promoCode = 0;
@@ -27,12 +58,27 @@ public class Item {
         this.total = total;
     }
 
-    public Item(String supplierArticle, int quantity, int quantityFull, int nmId, String subject) {
+    public Item(String supplierArticle, int quantity, int quantityFull, int nmId, String subject, String warehouseName) {
         this.supplierArticle = supplierArticle;
         this.quantity = quantity;
         this.quantityFull = quantityFull;
         this.nmId = nmId;
         this.subject = subject;
+        if (warehouseName.equals("Санкт-Петербург")) warehouseSaintPetersburg = quantity;
+        else if (warehouseName.equals("Санкт-Петербург 2")) warehouseSaintPetersburg2 = quantity;
+        else if (warehouseName.equals("Коледино")) warehouseKoledino = quantity;
+        else if (warehouseName.equals("Электросталь")) warehouseElectrostal = quantity;
+        else if (warehouseName.equals("Казань")) warehouseKazan = quantity;
+        else warehouseOther = quantity;
+    }
+
+    public void addQuantityWarehouse(int quantity, String warehouseName) {
+        if (warehouseName.equals("Санкт-Петербург")) warehouseSaintPetersburg = warehouseSaintPetersburg + quantity;
+        else if (warehouseName.equals("Санкт-Петербург 2")) warehouseSaintPetersburg2 = warehouseSaintPetersburg2 + quantity;
+        else if (warehouseName.equals("Коледино")) warehouseKoledino = warehouseKoledino + quantity;
+        else if (warehouseName.equals("Электросталь")) warehouseElectrostal = warehouseElectrostal + quantity;
+        else if (warehouseName.equals("Казань")) warehouseKazan = warehouseKazan + quantity;
+        else warehouseOther = warehouseOther + quantity;
     }
 
     public void setQuantity(int quantity) {
