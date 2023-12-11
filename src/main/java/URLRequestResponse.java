@@ -49,12 +49,12 @@ public class URLRequestResponse {
                     case (6):
 //                        dataAPI = "https://suppliers-stats.wildberries.ru";
                         dataAPI = "https://statistics-api.wildberries.ru";
-                        dataMethod = "/api/v1/supplier/sales?dateFrom=" + getData(0) + "T00%3A00%3A00.000Z&key=" + token;
+                        dataMethod = "/api/v1/supplier/sales?dateFrom=" + getData(-7) + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     case (7):
 //                        dataAPI = "https://suppliers-stats.wildberries.ru";
                         dataAPI = "https://statistics-api.wildberries.ru";
-                        dataMethod = "/api/v1/supplier/orders?dateFrom=" + getData(0) + "T00%3A00%3A00.000Z&key=" + token;
+                        dataMethod = "/api/v1/supplier/orders?dateFrom=" + getData(-7) + "T00%3A00%3A00.000Z&key=" + token;
                         break;
                     default:
                         break;

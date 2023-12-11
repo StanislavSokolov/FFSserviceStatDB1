@@ -3,7 +3,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import jdk.nashorn.internal.parser.Token;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,8 +11,6 @@ import static java.lang.Integer.parseInt;
 public class Update extends Thread {
 
     private final String TOKENWBSTANDART = "TOKENWBSTANDART";
-    private final String TOKENWBSTATISTIC = "TOKENWBSTATISTIC";
-    private final String TOKENWBADVERTISING = "TOKENWBADVERTISING";
     private final String TOKENOZON1 = "TOKENOZON1";
     private final String TOKENOZON2 = "TOKENOZON2";
 
@@ -28,7 +25,7 @@ public class Update extends Thread {
             try {
                 update(count);
                 sleep(900000);
-                if (count > 48) count = 0; else count++;
+                if (count > 4) count = 0; else count++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -45,105 +42,10 @@ public class Update extends Thread {
         URL generetedURL;
         String response = null;
 
-        generetedURL = URLRequestResponse.generateURL(2, 6, TOKENWBSTATISTIC);
-        try {
-            response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTATISTIC);
-            System.out.println(response);
-
-            if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
-                ArrayList<Product> products = new ArrayList<>();
-                JSONObject jsonObject = new JSONObject("{\"price\":" + response + "}");
-                for (int i = 0; i < jsonObject.getJSONArray("price").length(); i++) {
-                    boolean coincidence = false;
-                    String s = jsonObject.getJSONArray("price").getJSONObject(i).get("saleID").toString();
-                    if (products.isEmpty()) {
-                        products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
-                                Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
-                                (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("finishedPrice").toString())),
-                                (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("forPay").toString())),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("oblastOkrugName").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
-                    } else {
-                        for (Product product : products) {
-                            if (product.getOdid().equals(jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString())) {
-                                coincidence = true;
-                            }
-                        }
-                        if (!coincidence) {
-                            products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
-                                    Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
-                                    (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("finishedPrice").toString())),
-                                    (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("forPay").toString())),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("oblastOkrugName").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
-                        }
-                    }
-                }
-                SQL.upDate(products, "sales");
-            }
-
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        generetedURL = URLRequestResponse.generateURL(2, 7, TOKENWBSTATISTIC);
-        try {
-            response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTATISTIC);
-            System.out.println(response);
-
-            if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
-                ArrayList<Product> products = new ArrayList<>();
-                JSONObject jsonObject = new JSONObject("{\"price\":" + response + "}");
-                for (int i = 0; i < jsonObject.getJSONArray("price").length(); i++) {
-                    boolean coincidence = false;
-                    String s = jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString();
-                    if (products.isEmpty()) {
-                        products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
-                                Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("oblast").toString(),
-                                jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
-                    } else {
-                        for (Product product : products) {
-                            if (product.getOdid().equals(jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString())) {
-                                coincidence = true;
-                            }
-                        }
-                        if (!coincidence) {
-                            products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
-                                    Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("oblast").toString(),
-                                    jsonObject.getJSONArray("price").getJSONObject(i).get("odid").toString()));
-                        }
-                    }
-                }
-                SQL.upDate(products, "orders");
-            }
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         if (count == 0) {
-            generetedURL = URLRequestResponse.generateURL(2, 5, TOKENWBSTATISTIC);
+            generetedURL = URLRequestResponse.generateURL(2, 5, TOKENWBSTANDART);
             try {
-                response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTATISTIC);
+                response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTANDART);
                 System.out.println(response);
                 if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
                     ArrayList<Item> items = new ArrayList<>();
@@ -205,6 +107,99 @@ public class Update extends Thread {
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
+        } else {
+            generetedURL = URLRequestResponse.generateURL(2, 6, TOKENWBSTANDART);
+            try {
+                response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTANDART);
+                System.out.println(response);
+
+                if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
+                    ArrayList<Product> products = new ArrayList<>();
+                    JSONObject jsonObject = new JSONObject("{\"price\":" + response + "}");
+                    for (int i = 0; i < jsonObject.getJSONArray("price").length(); i++) {
+                        boolean coincidence = false;
+                        String s = jsonObject.getJSONArray("price").getJSONObject(i).get("saleID").toString();
+                        if (products.isEmpty()) {
+                            products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
+                                    Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                    (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("finishedPrice").toString())),
+                                    (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("forPay").toString())),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("regionName").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString()));
+                        } else {
+                            for (Product product : products) {
+                                if (product.getOdid().equals(jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString())) {
+                                    coincidence = true;
+                                }
+                            }
+                            if (!coincidence) {
+                                products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
+                                        Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                        (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("finishedPrice").toString())),
+                                        (int) (Float.parseFloat(jsonObject.getJSONArray("price").getJSONObject(i).get("forPay").toString())),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("regionName").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString()));
+                            }
+                        }
+                    }
+                    SQL.upDate(products, "sales");
+                }
+
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            generetedURL = URLRequestResponse.generateURL(2, 7, TOKENWBSTANDART);
+            try {
+                response = URLRequestResponse.getResponseFromURL(generetedURL, TOKENWBSTANDART);
+                System.out.println(response);
+
+                if (!response.equals("{\"errors\":[\"(api-new) too many requests\"]}")) {
+                    ArrayList<Product> products = new ArrayList<>();
+                    JSONObject jsonObject = new JSONObject("{\"price\":" + response + "}");
+                    for (int i = 0; i < jsonObject.getJSONArray("price").length(); i++) {
+                        boolean coincidence = false;
+                        String s = jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString();
+                        if (products.isEmpty()) {
+                            products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
+                                    Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("regionName").toString(),
+                                    jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString()));
+                        } else {
+                            for (Product product : products) {
+                                if (product.getOdid().equals(jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString())) {
+                                    coincidence = true;
+                                }
+                            }
+                            if (!coincidence) {
+                                products.add(new Product(jsonObject.getJSONArray("price").getJSONObject(i).get("date").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("subject").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("supplierArticle").toString(),
+                                        Integer.parseInt(jsonObject.getJSONArray("price").getJSONObject(i).get("nmId").toString()),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("warehouseName").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("regionName").toString(),
+                                        jsonObject.getJSONArray("price").getJSONObject(i).get("gNumber").toString()));
+                            }
+                        }
+                    }
+                    SQL.upDate(products, "orders");
+                }
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
