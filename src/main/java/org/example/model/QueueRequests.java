@@ -12,7 +12,7 @@ public class QueueRequests {
     private int id;
 
     @Column(name = "clientId")
-    private String clientId;
+    private int clientId;
     @Column(name = "shop")
     private String shop;
     @Column(name = "method")
@@ -33,11 +33,11 @@ public class QueueRequests {
         this.id = id;
     }
 
-    public String getClientId() {
+    public int getClientId() {
         return clientId;
     }
 
-    public void setClientId(String clientId) {
+    public void setClientId(int clientId) {
         this.clientId = clientId;
     }
 
@@ -73,7 +73,7 @@ public class QueueRequests {
         this.dataToChange = dataToChange;
     }
 
-    public QueueRequests(String clientId, String shop, String method, String article, String dataToChange) {
+    public QueueRequests(int clientId, String shop, String method, String article, String dataToChange) {
         this.clientId = clientId;
         this.shop = shop;
         this.method = method;

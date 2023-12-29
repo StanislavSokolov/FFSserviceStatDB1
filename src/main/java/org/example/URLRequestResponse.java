@@ -135,7 +135,7 @@ public class URLRequestResponse {
         return year + "-" + month1 + "-" + day;
     }
 
-    public static String getResponseFromURLandBodyRequest(URL url, String token, String supplierArticle) throws IOException {
+    public static String getResponseFromURLandBodyRequest(URL url, String token, ArrayList<Key> keys) throws IOException {
 
         String reqBody = "";
 
@@ -144,7 +144,7 @@ public class URLRequestResponse {
         httpURLConnection.setRequestProperty("Authorization", token);
         httpURLConnection.setDoOutput(true);
         OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
-        reqBody = "{\"vendorCodes\":[\"" + supplierArticle + "\"],\"allowedCategoriesOnly\":true}";
+        reqBody = "[{\"" + keys.get(0).getKey() + "\":" + keys.get(0).getData() + ", \"" + keys.get(1).getKey() + "\":" + keys.get(1).getData() + "}]";
         writer.write(reqBody);
         writer.close();
 
