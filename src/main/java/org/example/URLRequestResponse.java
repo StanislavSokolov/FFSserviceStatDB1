@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.com.Article;
 import org.example.com.Key;
 
 import java.io.IOException;
@@ -35,17 +36,17 @@ public class URLRequestResponse {
                 dataMethod = "/api/v1/supplier/orders?dateFrom=" + getDate(-7) + "T00%3A00%3A00.000Z&key=" + token;
             }
             if (methodNumber.equals("info")) {
-                dataAPI = "https://suppliers-api.wildberries.ru";
-                dataMethod = "/public/api/v1/info?quantity=0";
+                dataAPI = "https://discounts-prices-api.wb.ru";
+                dataMethod = "/api/v2/list/goods/filter?limit=1000&offset=0";
             }
             if (methodNumber.equals("prices")) {
-                dataAPI = "https://suppliers-api.wildberries.ru";
-                dataMethod = "/public/api/v1/prices";
+                dataAPI = "https://discounts-prices-api.wb.ru";
+                dataMethod = "/api/v2/upload/task";
             }
-            if (methodNumber.equals("updateDiscounts")) {
-                dataAPI = "https://suppliers-api.wildberries.ru";
-                dataMethod = "/public/api/v1/updateDiscounts";
-            }
+//            if (methodNumber.equals("updateDiscounts")) {
+//                dataAPI = "https://suppliers-api.wildberries.ru";
+//                dataMethod = "/public/api/v1/updateDiscounts";
+//            }
             if (methodNumber.equals("updatePromocodes")) {
                 dataAPI = "https://suppliers-api.wildberries.ru";
                 dataMethod = "/public/api/v1/updatePromocodes";
@@ -56,7 +57,7 @@ public class URLRequestResponse {
             }
             if (methodNumber.equals("getCard")) {
                 dataAPI = "https://suppliers-api.wildberries.ru";
-                dataMethod = "/content/v1/cards/filter";
+                dataMethod = "/content/v2/get/cards/list";
             }
             if (methodNumber.equals("getRating")) {
                 dataAPI = "https://feedbacks-api.wildberries.ru";
@@ -135,7 +136,7 @@ public class URLRequestResponse {
         return year + "-" + month1 + "-" + day;
     }
 
-    public static String getResponseFromURLandBodyRequest(URL url, String token, ArrayList<Key> keys) throws IOException {
+    public static String getResponseFromURLandBodyRequest(URL url, String token, Article article) throws IOException {
 
         String reqBody = "";
 
@@ -143,8 +144,12 @@ public class URLRequestResponse {
         httpURLConnection.setRequestProperty("accept", "application/json");
         httpURLConnection.setRequestProperty("Authorization", token);
         httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestMethod("POST");
         OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
-        reqBody = "[{\"" + keys.get(0).getKey() + "\":" + keys.get(0).getData() + ", \"" + keys.get(1).getKey() + "\":" + keys.get(1).getData() + "}]";
+//        reqBody = "{\"settings\":{\"cursor\"}[\"" + supplierArticle + "\"],\"allowedCategoriesOnly\":true}";
+//        reqBody = "{\"settings\":{\"sort\":{\"ascending\": false}, \"filter\": {\"textSearch\": \"\", \"allowedCategoriesOnly\": true, \"tagIDs\": [ ], \"objectIDs\": [ ], \"brands\": [ ], \"imtID\": " + supplierArticle + " , \"withPhoto\": -1}, \"cursor\": {\"updatedAt\": \"\", \"nmID\": 0, \"limit\": 11} } }";
+//        reqBody = "{\"settings\":{\"cursor\": {\"limit\": 100},\"filter\":{\"withPhoto\": -1}}}";
+        reqBody = "{\"data\": [{\"nmID\": " + article.getArticle() + ", \"price\": " + article.getPrice() + ", \"discount\": " + article.getDiscount() + "}]}";
         writer.write(reqBody);
         writer.close();
 
@@ -152,6 +157,24 @@ public class URLRequestResponse {
 
         return getResponse(httpURLConnection);
     }
+
+//    public static String getResponseFromURLandBodyRequest(URL url, String token, String parametr0, String parametr1, String parametr2) throws IOException {
+//
+//        String reqBody = "";
+//
+//        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//        httpURLConnection.setRequestProperty("accept", "application/json");
+//        httpURLConnection.setRequestProperty("Authorization", token);
+//        httpURLConnection.setDoOutput(true);
+//        OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
+//        reqBody = "{\"vendorCodes\":[\"" + supplierArticle + "\"],\"allowedCategoriesOnly\":true}";
+//        writer.write(reqBody);
+//        writer.close();
+//
+//        System.out.println(reqBody);
+//
+//        return getResponse(httpURLConnection);
+//    }
 
     public static String getResponseFromURL(URL url, String token) throws IOException {
 

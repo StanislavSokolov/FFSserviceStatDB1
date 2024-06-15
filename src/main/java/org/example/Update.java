@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.com.Article;
 import org.example.com.Key;
 import org.example.model.*;
 import org.hibernate.Session;
@@ -45,12 +46,15 @@ public class Update extends Thread {
                 User user = (User) session.createQuery("FROM User WHERE id LIKE '" + queueRequest.getClientId() + "'").getResultList().get(0);
                 String token = "";
                 if (queueRequest.getShop().equals("wb")) token = user.getTokenStandartWB();
-                generetedURL = URLRequestResponse.generateURL(queueRequest.getShop(), queueRequest.getMethod(), token, null);
-                ArrayList<Key> keys = new ArrayList<>();
-                keys.add(new Key("nmId", queueRequest.getArticle()));
-                keys.add(new Key("price", queueRequest.getDataToChange()));
+                generetedURL = URLRequestResponse.generateURL(queueRequest.getShop(), "prices", token, null);
+                Article article = null;
+                if (queueRequest.getMethod().equals("prices")) {
+                    article = new Article(queueRequest.getArticle(), queueRequest.getDataToChange(), queueRequest.getAddAttribute());
+                } else if (queueRequest.getMethod().equals("updateDiscounts")) {
+                    article = new Article(queueRequest.getArticle(), queueRequest.getAddAttribute(), queueRequest.getDataToChange());
+                }
                 try {
-                    response = URLRequestResponse.getResponseFromURLandBodyRequest(generetedURL, token, keys);
+                    response = URLRequestResponse.getResponseFromURLandBodyRequest(generetedURL, token, article);
                     System.out.println(response);
                 } catch (IOException e) {
                     e.printStackTrace();

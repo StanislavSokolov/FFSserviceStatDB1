@@ -21,6 +21,16 @@ public class QueueRequests {
     private String article;
     @Column(name = "dataToChange")
     private String dataToChange;
+    @Column(name = "addAttribute")
+    private String addAttribute;
+
+    public String getAddAttribute() {
+        return addAttribute;
+    }
+
+    public void setAddAttribute(String addAttribute) {
+        this.addAttribute = addAttribute;
+    }
 
     public QueueRequests() {
     }
@@ -73,11 +83,12 @@ public class QueueRequests {
         this.dataToChange = dataToChange;
     }
 
-    public QueueRequests(int clientId, String shop, String method, String article, String dataToChange) {
+    public QueueRequests(int clientId, String shop, String method, String article, String dataToChange, String addAttribute) {
         this.clientId = clientId;
         this.shop = shop;
         this.method = method;
         this.article = article;
         this.dataToChange = dataToChange;
+        this.addAttribute = addAttribute;
     }
 }
