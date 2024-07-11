@@ -31,8 +31,22 @@ public class Update extends Thread {
 
     private void update() {
 
-        SessionFactory sessionFactory = new Configuration().addAnnotatedClass(User.class).
-                addAnnotatedClass(QueueRequests.class).buildSessionFactory();
+
+        SessionFactory sessionFactory = null;
+        try {
+            sessionFactory = new Configuration().addAnnotatedClass(User.class).
+                    addAnnotatedClass(QueueRequests.class).
+                    setProperty("hibernate.driver_class", Settings.getProperties("hibernate.driver_class")).
+                    setProperty("hibernate.connection.url", Settings.getProperties("hibernate.connection.url")).
+                    setProperty("hibernate.connection.username", Settings.getProperties("hibernate.connection.username")).
+                    setProperty("hibernate.connection.password", Settings.getProperties("hibernate.connection.password")).
+                    setProperty("hibernate.dialect", Settings.getProperties("hibernate.dialect")).
+                    setProperty("hibernate.current_session_context_class", Settings.getProperties("hibernate.current_session_context_class")).
+                    setProperty("hibernate.show_sql", Settings.getProperties("hibernate.show_sql")).
+                    buildSessionFactory();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Session session = sessionFactory.getCurrentSession();
 
         try {
