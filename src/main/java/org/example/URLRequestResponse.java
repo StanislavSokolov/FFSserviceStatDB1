@@ -40,7 +40,7 @@ public class URLRequestResponse {
                 dataMethod = "/api/v2/list/goods/filter?limit=1000&offset=0";
             }
             if (methodNumber.equals("prices")) {
-                dataAPI = "https://discounts-prices-api.wb.ru";
+                dataAPI = "https://discounts-prices-api.wildberries.ru";
                 dataMethod = "/api/v2/upload/task";
             }
 //            if (methodNumber.equals("updateDiscounts")) {
@@ -145,16 +145,15 @@ public class URLRequestResponse {
         httpURLConnection.setRequestProperty("Authorization", token);
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setRequestMethod("POST");
-        OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream());
+        reqBody = "{\"data\": [{\"nmID\": " + article.getArticle() + ", \"price\": " + article.getPrice() + ", \"discount\": " + article.getDiscount() + "}]}";
+        System.out.println(reqBody);
+        try (OutputStreamWriter writer = new OutputStreamWriter(httpURLConnection.getOutputStream())) {
+            writer.write(reqBody);
+            writer.flush();
+        }
 //        reqBody = "{\"settings\":{\"cursor\"}[\"" + supplierArticle + "\"],\"allowedCategoriesOnly\":true}";
 //        reqBody = "{\"settings\":{\"sort\":{\"ascending\": false}, \"filter\": {\"textSearch\": \"\", \"allowedCategoriesOnly\": true, \"tagIDs\": [ ], \"objectIDs\": [ ], \"brands\": [ ], \"imtID\": " + supplierArticle + " , \"withPhoto\": -1}, \"cursor\": {\"updatedAt\": \"\", \"nmID\": 0, \"limit\": 11} } }";
 //        reqBody = "{\"settings\":{\"cursor\": {\"limit\": 100},\"filter\":{\"withPhoto\": -1}}}";
-        reqBody = "{\"data\": [{\"nmID\": " + article.getArticle() + ", \"price\": " + article.getPrice() + ", \"discount\": " + article.getDiscount() + "}]}";
-        writer.write(reqBody);
-        writer.close();
-
-        System.out.println(reqBody);
-
         return getResponse(httpURLConnection);
     }
 
@@ -186,16 +185,43 @@ public class URLRequestResponse {
         return getResponse(httpURLConnection);
     }
 
+//    private static String getResponse(HttpURLConnection httpURLConnection) throws IOException {
+//        try {
+//            InputStream in = httpURLConnection.getInputStream();
+//            Scanner scanner = new Scanner(in);
+//            scanner.useDelimiter("\\A");
+//            boolean hasInput = scanner.hasNext();
+//            if(hasInput) {
+//                return scanner.next();
+//            } else {
+//                return  null;
+//            }
+//        } finally {
+//            httpURLConnection.disconnect();
+//        }
+//    }
+
     private static String getResponse(HttpURLConnection httpURLConnection) throws IOException {
         try {
-            InputStream in = httpURLConnection.getInputStream();
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-            boolean hasInput = scanner.hasNext();
-            if(hasInput) {
-                return scanner.next();
+            int responseCode = httpURLConnection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            if (responseCode >= 400) {
+                // Обработка ошибок
+                try (InputStream errorStream = httpURLConnection.getErrorStream()) {
+                    if (errorStream != null) {
+                        Scanner scanner = new Scanner(errorStream).useDelimiter("\\A");
+                        return scanner.hasNext() ? scanner.next() : "No error message";
+                    } else {
+                        return "No error stream";
+                    }
+                }
             } else {
-                return  null;
+                // Обработка успешного ответа
+                try (InputStream in = httpURLConnection.getInputStream()) {
+                    Scanner scanner = new Scanner(in).useDelimiter("\\A");
+                    return scanner.hasNext() ? scanner.next() : "No response";
+                }
             }
         } finally {
             httpURLConnection.disconnect();
